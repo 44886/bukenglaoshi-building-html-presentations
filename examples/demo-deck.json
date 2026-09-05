@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "title": "从信号到决策",
+    "language": "zh-CN",
+    "theme": "atlas-editorial",
+    "aspectRatio": "16:9",
+    "customCss": ".signal-mark{width:154px;height:154px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fffdf7;font:800 40px/1 var(--font-body)} .folio{font:700 15px/1 var(--font-body);color:var(--muted)} .cover-spread{height:100%;display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:78px;align-items:end;border-top:1px solid var(--fg);padding-top:24px}.cover-copy{height:100%;display:flex;flex-direction:column;justify-content:space-between}.cover-copy h1{font-size:104px;max-width:680px}.cover-meta{display:flex;align-items:end;justify-content:space-between;gap:28px}.cover-meta .lede{max-width:450px;font-size:24px}.signal-figure{margin:0;align-self:center}.signal-figure img{width:100%;height:auto;display:block}.signal-figure figcaption{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding-top:13px;margin-top:16px;font-size:15px}.section-head{display:flex;justify-content:space-between;gap:40px;align-items:end;border-bottom:1px solid var(--fg);padding-bottom:22px}.section-head h2{max-width:1060px}.evidence-page{height:100%;display:grid;grid-template-rows:auto 1fr;gap:52px}.evidence-body{display:grid;grid-template-columns:.78fr 1.22fr;gap:70px;align-items:stretch}.primary-evidence{display:flex;flex-direction:column;justify-content:space-between}.primary-evidence .value{font:800 152px/.82 var(--font-display);color:var(--accent)}.primary-evidence .label{font-size:22px;color:var(--fg)}.primary-evidence .context{font-size:18px;color:var(--muted)}.supporting-evidence{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--fg);border-bottom:1px solid var(--fg)}.supporting-evidence article{padding:34px 30px 28px 0;display:flex;flex-direction:column;justify-content:space-between}.supporting-evidence article+article{border-left:1px solid var(--line);padding-left:34px}.supporting-evidence .value{font:700 82px/1 var(--font-display);color:var(--accent-2)}.supporting-evidence .label{font-size:18px}.supporting-evidence .context{font-size:17px;color:var(--muted)}.chart-sheet{height:100%;min-height:0;border-bottom:1px solid var(--fg);position:relative}.chart-sheet .chart{min-height:0;height:100%}.chart-caption{position:absolute;right:0;bottom:12px;font-size:14px;color:var(--muted)}.editorial-timeline .timeline-item{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;padding:26px 20px 20px 0;box-shadow:none}.editorial-timeline .timeline-item.is-active{background:transparent;border-top:5px solid var(--accent);transform:translateY(-4px);padding-top:22px}.process-spread{height:100%;display:grid;grid-template-columns:.72fr 1.28fr;gap:86px;align-items:center}.process-thesis{display:grid;gap:28px;align-content:center}.process-thesis h2{font-size:54px}.process-sequence{list-style:none;margin:0;padding:0;border-bottom:1px solid var(--fg)}.process-sequence li{display:grid;grid-template-columns:84px 220px 1fr;align-items:baseline;gap:22px;padding:28px 0;border-top:1px solid var(--fg)}.process-sequence .step{font:700 15px/1 var(--font-body);color:var(--accent)}.process-sequence h3{font-size:30px}.process-sequence p{font-size:19px;color:var(--muted)}.embed-spread{height:100%;display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr);gap:68px;align-items:center}.embed-copy{display:grid;gap:24px}.embed-copy h2{font-size:54px}.embed-spread .web-embed{border:1px solid var(--fg);box-shadow:14px 14px 0 var(--panel)}.final-number{font:800 150px/1 var(--font-display);color:var(--accent)} body[data-theme='atlas-editorial'] #deck-stage::before{display:none}"
+  },
+  "slides": [
+    {
+      "id": "opening",
+      "title": "从信号到决策",
+      "className": "cover",
+      "content": "<div class='cover-spread'><div class='cover-copy'><div><p class='eyebrow fragment'>2026 产品叙事演示</p><h1>从信号<br>到决策</h1></div><div class='cover-meta'><div><p class='lede fragment'>把分散的市场变化，变成团队可以共同理解、立即行动的清晰路径。</p><p class='folio' style='margin-top:24px'>DEMO / 01—07</p></div><div class='signal-mark fragment' data-shared='signal-node'>42%</div></div></div><figure class='signal-figure fragment'><img src='asset:assets/demo-diagram.svg' alt='大量分散信号汇聚为一条经过语境判断的决策路径'><figcaption><span>信号场 / 决策路径</span><span>证据先于装饰</span></figcaption></figure></div>",
+      "notes": "开场先强调问题不是没有数据，而是信号无法进入同一个决策语境。"
+    },
+    {
+      "id": "metrics",
+      "title": "关键指标",
+      "content": "<div class='evidence-page'><header class='section-head'><div><p class='eyebrow'>01 / 可观测变化</p><h2>决策速度正在改变</h2></div><p class='folio'>三项证据，不是三张装饰卡片</p></header><div class='evidence-body'><article class='primary-evidence' data-shared='signal-node'><span class='label'>高质量信号进入决策</span><strong class='value count-up' data-value='42' data-suffix='%'>0</strong><span class='context'>较上季度提升 11 个百分点</span></article><div class='supporting-evidence'><article class='fragment'><span class='label'>平均决策周期</span><strong class='value count-up' data-value='4.2' data-suffix=' 天' data-decimals='1'>0</strong><span class='context'>此前为 7.8 天</span></article><article class='fragment'><span class='label'>跨团队复用率</span><strong class='value count-up' data-value='68' data-suffix='%'>0</strong><span class='context'>同一证据被重复利用</span></article></div></div></div>",
+      "notes": "强调 42% 是信号进入决策的比例，不是业务增长率。"
+    },
+    {
+      "id": "trend",
+      "title": "采用率趋势",
+      "className": "dashboard",
+      "content": "<header class='section-head'><div><p class='eyebrow'>02 / 趋势</p><h2>团队采用率持续越过临界点</h2></div><p class='folio'>单位：活跃团队占比</p></header><figure class='chart-sheet'><div class='chart' data-chart-id='adoption'><script type='application/json' class='chart-options'>{\"animationDuration\":1100,\"tooltip\":{\"trigger\":\"axis\"},\"legend\":{\"data\":[\"采用率\",\"高频使用\"]},\"grid\":{\"left\":62,\"right\":34,\"top\":62,\"bottom\":54},\"xAxis\":{\"type\":\"category\",\"boundaryGap\":false,\"data\":[\"Q1\",\"Q2\",\"Q3\",\"Q4\",\"Q1\",\"Q2\"]},\"yAxis\":{\"type\":\"value\",\"max\":100,\"axisLabel\":{\"formatter\":\"{value}%\"}},\"series\":[{\"name\":\"采用率\",\"type\":\"line\",\"smooth\":true,\"symbolSize\":10,\"areaStyle\":{\"opacity\":0.08},\"data\":[18,27,39,52,67,82]},{\"name\":\"高频使用\",\"type\":\"line\",\"smooth\":true,\"symbolSize\":9,\"data\":[8,13,21,31,45,63]}]}</script></div><figcaption class='chart-caption'>采用不等于深度使用，两条曲线必须同时阅读。</figcaption></figure>",
+      "notes": "第二条线代表高频使用，不要把采用与深度使用混为一谈。"
+    },
+    {
+      "id": "timeline",
+      "title": "推进时间轴",
+      "content": "<div class='evidence-page'><header class='section-head'><div><p class='eyebrow'>03 / 路线</p><h2>把注意力放在当前一步</h2></div><p class='folio'>自动推进，也接受现场选择</p></header><div class='timeline editorial-timeline' data-autoplay='1800' data-start='0'><div class='timeline-track'><div class='timeline-fill'></div></div><div class='timeline-items'><article class='timeline-item'><div class='time'>Q1</div><h3>发现</h3><p>定义可验证的信号。</p></article><article class='timeline-item'><div class='time'>Q2</div><h3>连接</h3><p>把证据带入统一语境。</p></article><article class='timeline-item'><div class='time'>Q3</div><h3>决策</h3><p>明确负责人和判断依据。</p></article><article class='timeline-item'><div class='time'>Q4</div><h3>复用</h3><p>让结果回到学习循环。</p></article></div></div></div>",
+      "notes": "演示时点击 Q3，说明局部重点放大并非装饰，而是讲解焦点。"
+    },
+    {
+      "id": "process",
+      "title": "决策路径",
+      "content": "<div class='process-spread'><div class='process-thesis'><p class='eyebrow'>04 / 共同语言</p><div class='signal-mark' data-shared='signal-node'>42%</div><h2>同一个对象，穿过不同语境</h2><p class='lede'>共享元素不是特效，它让证据在叙事中保持身份。</p></div><ol class='process-sequence'><li class='fragment'><span class='step'>01</span><h3>捕捉信号</h3><p>保留来源、时间和不确定性。</p></li><li class='fragment'><span class='step'>02</span><h3>补足语境</h3><p>把孤立数字连接到用户与目标。</p></li><li class='fragment'><span class='step'>03</span><h3>形成决策</h3><p>让证据、判断和行动保持连续。</p></li></ol></div>",
+      "notes": "注意 42% 从指标证据移动为决策节点，这就是共享对象的语义连续性。"
+    },
+    {
+      "id": "embedded-demo",
+      "title": "离线网页嵌入",
+      "content": "<div class='embed-spread'><div class='embed-copy'><p class='eyebrow'>05 / 嵌入式体验</p><h2>网页也能成为演示的一部分</h2><p class='lede'>这里使用 srcdoc，将交互页面直接放进同一个 HTML，不需要联网。</p><p class='folio'>真实远程网页仍受网络、CSP 与 X-Frame-Options 限制。</p></div><div class='web-embed'><span class='embed-status'>Embedded</span><iframe title='离线方案模拟器' sandbox='allow-scripts' srcdoc='<!doctype html><html lang=zh-CN><head><meta charset=utf-8><style>body{margin:0;padding:48px;background:#f4f1e9;color:#17202a;font:18px/1.5 Segoe UI,Arial,sans-serif}h1{font:700 38px/1.1 Georgia,serif}button{border:1px solid #17202a;background:#d4422f;color:white;padding:14px 20px;font:700 17px Segoe UI;cursor:pointer}#result{margin-top:32px;padding-top:18px;border-top:1px solid #17202a;font-size:28px;font-weight:700;color:#176b87}</style></head><body><p>LOCAL MODEL / 01</p><h1>方案影响模拟</h1><p>运行本地模型，查看决策周期的预期变化。</p><button id=run>运行模拟</button><div id=result>等待运行</div><script>window.__bound=true;document.getElementById(&quot;run&quot;).addEventListener(&quot;click&quot;,function(){document.getElementById(&quot;result&quot;).textContent=&quot;预计提升：+27% · 本地模拟完成&quot;})</script></body></html>'></iframe><p class='embed-fallback'>离线模拟器未能显示。</p></div></div>",
+      "notes": "点击运行模拟，证明 iframe 内容包含在本文件中。"
+    },
+    {
+      "id": "close",
+      "title": "一个文件，一条连贯叙事",
+      "className": "quote-slide",
+      "content": "<p class='eyebrow'>结论 / 07</p><blockquote class='quote'>一个文件，不等于一个静态页面；它可以是一条完整、连续、可验证的叙事。</blockquote><div class='rule'></div><div class='row between'><p class='lede'>离线运行 · 平滑翻页 · 数据图表 · 可复用组件</p><strong class='final-number count-up' data-value='1'>0</strong></div>",
+      "notes": "结束后可按 Home 回到封面，或直接打印为 PDF。"
+    }
+  ]
+}

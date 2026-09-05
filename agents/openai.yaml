@@ -1,0 +1,5 @@
+interface:
+  display_name: "HTML 单文件演示文稿"
+  short_description: "创建多风格、自包含、支持翻页笔与分步叙事的 HTML 单文件演示稿"
+  brand_color: "#FF5B45"
+  default_prompt: "Use $bukenglaoshi-building-html-presentations to turn my page-by-page content into a polished standalone HTML presentation."

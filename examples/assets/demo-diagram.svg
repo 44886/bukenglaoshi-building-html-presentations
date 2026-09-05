@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Signal field becoming a decision path</title>
+  <desc id="desc">Many scattered observations converge through context into one documented decision.</desc>
+  <rect width="960" height="640" fill="#fffdf7"/>
+  <g fill="#176b87" opacity=".78">
+    <circle cx="94" cy="112" r="9"/><circle cx="176" cy="76" r="6"/><circle cx="250" cy="142" r="12"/>
+    <circle cx="120" cy="244" r="7"/><circle cx="220" cy="268" r="10"/><circle cx="306" cy="222" r="6"/>
+    <circle cx="78" cy="392" r="12"/><circle cx="184" cy="438" r="7"/><circle cx="286" cy="368" r="9"/>
+    <circle cx="142" cy="532" r="6"/><circle cx="262" cy="520" r="11"/>
+  </g>
+  <g stroke="#b7b0a4" stroke-width="2" fill="none">
+    <path d="M94 112L380 204M176 76L380 204M250 142L380 204M120 244L380 204M220 268L380 204M306 222L380 204"/>
+    <path d="M78 392L380 326M184 438L380 326M286 368L380 326M142 532L380 448M262 520L380 448"/>
+  </g>
+  <g fill="#f4f1e9" stroke="#17202a" stroke-width="3">
+    <circle cx="404" cy="204" r="34"/><circle cx="404" cy="326" r="34"/><circle cx="404" cy="448" r="34"/>
+  </g>
+  <path d="M440 204C564 204 568 320 676 320M440 326H676M440 448C564 448 568 332 676 332" fill="none" stroke="#d4422f" stroke-width="7"/>
+  <circle cx="744" cy="326" r="70" fill="#d4422f"/>
+  <path d="M676 326H812" stroke="#17202a" stroke-width="2"/>
+  <g font-family="Segoe UI,Arial,sans-serif" fill="#17202a">
+    <text x="68" y="58" font-size="20" font-weight="700">OBSERVATIONS / 11</text>
+    <text x="352" y="554" font-size="18">context filters</text>
+    <text x="690" y="426" font-size="18">documented decision</text>
+  </g>
+  <text x="744" y="337" text-anchor="middle" font-family="Georgia,serif" font-size="34" font-weight="700" fill="#fffdf7">DECIDE</text>
+</svg>

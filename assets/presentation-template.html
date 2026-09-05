@@ -1,0 +1,923 @@
+<!doctype html>
+<html lang="__LANG__">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>__DECK_TITLE__</title>
+  <style>
+    :root {
+      --stage-width: 1600;
+      --stage-height: 900;
+      --deck-scale: 1;
+      --bg: #0b0d10;
+      --surface: #14181d;
+      --panel: #1b2128;
+      --fg: #f5f7fa;
+      --muted: #9ba7b4;
+      --accent: #ff5b45;
+      --accent-2: #4fd1a5;
+      --line: #343c46;
+      --shadow: rgba(0, 0, 0, .28);
+      --radius: 6px;
+      --font-display: Inter, "Segoe UI", Arial, sans-serif;
+      --font-body: Inter, "Segoe UI", Arial, sans-serif;
+      --ease: cubic-bezier(.2, .75, .2, 1);
+      --duration: 680ms;
+    }
+
+    body[data-theme="atlas-editorial"] {
+      --bg: #f4f1e9; --surface: #fffdf7; --panel: #e7e1d5; --fg: #17202a;
+      --muted: #65717d; --accent: #d4422f; --accent-2: #176b87; --line: #b7b0a4;
+      --shadow: rgba(37, 32, 24, .18); --font-display: Georgia, "Times New Roman", serif;
+    }
+    body[data-theme="signal-noir"] {
+      --bg: #090b0e; --surface: #12161b; --panel: #1b2229; --fg: #f5f7fa;
+      --muted: #98a5b3; --accent: #ff614d; --accent-2: #52d3b2; --line: #35404c;
+    }
+    body[data-theme="flagship-keynote"] {
+      --bg: #020203; --surface: #050506; --panel: #111113; --fg: #f5f5f7;
+      --muted: #8e8e93; --accent: #ff6b35; --accent-2: #d8d8dc; --line: #2a2a2e;
+      --shadow: rgba(0, 0, 0, .42); --radius: 4px;
+    }
+    body[data-theme="boardroom-clarity"] {
+      --bg: #f5f7f8; --surface: #ffffff; --panel: #e8edf0; --fg: #18212a;
+      --muted: #65737e; --accent: #1769aa; --accent-2: #dd5842; --line: #bdc8cf;
+    }
+    body[data-theme="data-observatory"] {
+      --bg: #10131a; --surface: #181d26; --panel: #222a36; --fg: #edf2f7;
+      --muted: #9eabb9; --accent: #00c2a8; --accent-2: #ffcb47; --line: #3c4858;
+    }
+    body[data-theme="field-notes"] {
+      --bg: #f0eee6; --surface: #faf9f4; --panel: #e0e4d8; --fg: #252b27;
+      --muted: #68706a; --accent: #28765c; --accent-2: #be4f3b; --line: #b9beb4;
+      --font-display: Georgia, "Times New Roman", serif;
+    }
+    body[data-theme="neo-brutal"] {
+      --bg: #ffef5a; --surface: #fffdf1; --panel: #ff835c; --fg: #111111;
+      --muted: #4d4935; --accent: #ef3e23; --accent-2: #1a65ff; --line: #111111;
+      --shadow: rgba(17, 17, 17, 1); --radius: 0px;
+    }
+    body[data-theme="product-studio"] {
+      --bg: #f7f8fa; --surface: #ffffff; --panel: #e9edf4; --fg: #171a21;
+      --muted: #687181; --accent: #635bff; --accent-2: #00a884; --line: #cbd2dd;
+    }
+    body[data-theme="science-blueprint"] {
+      --bg: #eaf4f8; --surface: #f8fcfd; --panel: #d4e8ef; --fg: #123040;
+      --muted: #547182; --accent: #0079a8; --accent-2: #e94f37; --line: #8eb5c5;
+    }
+    body[data-theme="warm-human"] {
+      --bg: #f8eee5; --surface: #fffaf6; --panel: #ead9cb; --fg: #2d2523;
+      --muted: #75645e; --accent: #d14b3a; --accent-2: #2e7d73; --line: #c9aea0;
+      --font-display: Georgia, "Times New Roman", serif;
+    }
+    body[data-theme="museum-minimal"] {
+      --bg: #f3f2ef; --surface: #ffffff; --panel: #e5e3de; --fg: #171717;
+      --muted: #6c6a65; --accent: #b52f2f; --accent-2: #315f75; --line: #c8c5be;
+      --font-display: Georgia, "Times New Roman", serif;
+    }
+    body[data-theme="playful-geometry"] {
+      --bg: #fff7df; --surface: #ffffff; --panel: #cce9ff; --fg: #20232a;
+      --muted: #626a75; --accent: #ed4c67; --accent-2: #167d78; --line: #222831;
+      --shadow: rgba(32, 35, 42, .22);
+    }
+    body[data-theme="mono-cinema"] {
+      --bg: #070707; --surface: #111111; --panel: #202020; --fg: #f1f1ed;
+      --muted: #a6a6a1; --accent: #f1f1ed; --accent-2: #d95445; --line: #484848;
+      --font-display: Georgia, "Times New Roman", serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      letter-spacing: 0;
+      transition: background-color 240ms ease;
+    }
+    button, input, select, textarea { font: inherit; letter-spacing: 0; }
+    button:focus-visible, [tabindex]:focus-visible, a:focus-visible {
+      outline: 3px solid var(--accent-2);
+      outline-offset: 3px;
+    }
+    a { color: var(--accent); }
+
+    #viewport { position: fixed; inset: 0; overflow: hidden; }
+    #deck-stage {
+      --slide-enter-x: 9%;
+      --slide-enter-rotate: -2deg;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: calc(var(--stage-width) * 1px);
+      height: calc(var(--stage-height) * 1px);
+      transform: translate(-50%, -50%) scale(var(--deck-scale));
+      transform-origin: center;
+      background: var(--surface);
+      box-shadow: 0 28px 80px var(--shadow);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    #deck-stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      opacity: .12;
+      pointer-events: none;
+      background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.55), transparent 70%);
+    }
+    body[data-theme="atlas-editorial"] #deck-stage::before,
+    body[data-theme="field-notes"] #deck-stage::before,
+    body[data-theme="warm-human"] #deck-stage::before,
+    body[data-theme="museum-minimal"] #deck-stage::before { opacity: .07; }
+    body[data-theme="neo-brutal"] #deck-stage { border: 5px solid var(--line); box-shadow: 14px 14px 0 var(--shadow); }
+    body[data-theme="flagship-keynote"] #deck-stage { box-shadow: none; }
+    body[data-theme="flagship-keynote"] #deck-stage::before { opacity: 0; }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      display: block;
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate3d(var(--slide-enter-x), 0, 0) rotateY(var(--slide-enter-rotate)) scale(.985);
+      transform-origin: center;
+      transition: opacity var(--duration) var(--ease), transform var(--duration) var(--ease);
+      contain: layout paint;
+    }
+    #deck-stage[data-direction="backward"] { --slide-enter-x: -9%; --slide-enter-rotate: 2deg; }
+    .slide.is-active, .slide.is-exiting {
+      visibility: visible;
+    }
+    .slide.is-active {
+      z-index: 3;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate3d(0, 0, 0) rotateY(0) scale(1);
+    }
+    .slide.is-exiting {
+      z-index: 2;
+      opacity: 0;
+      transform: translate3d(-7%, 0, 0) rotateY(2deg) scale(.985);
+    }
+    #deck-stage[data-direction="backward"] .slide.is-exiting {
+      transform: translate3d(7%, 0, 0) rotateY(-2deg) scale(.985);
+    }
+    .slide-inner {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      padding: 90px 104px 86px;
+      display: grid;
+      align-content: center;
+      gap: 28px;
+      overflow: hidden;
+    }
+    .slide.cover .slide-inner { align-content: end; padding-bottom: 118px; }
+    .slide.dashboard .slide-inner { align-content: stretch; grid-template-rows: auto 1fr; }
+    .slide.split .slide-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; }
+    .slide.quote-slide .slide-inner { align-content: center; max-width: 1320px; }
+
+    h1, h2, h3, p, blockquote { margin: 0; }
+    h1, h2, h3 { font-family: var(--font-display); font-weight: 700; letter-spacing: 0; }
+    h1 { font-size: 92px; line-height: 1.02; max-width: 1300px; text-wrap: balance; }
+    h2 { font-size: 60px; line-height: 1.06; text-wrap: balance; }
+    h3 { font-size: 30px; line-height: 1.16; }
+    p, li { font-size: 25px; line-height: 1.48; }
+    .eyebrow {
+      color: var(--accent);
+      font-family: var(--font-body);
+      font-size: 17px;
+      font-weight: 750;
+      line-height: 1.2;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .lede { max-width: 920px; color: var(--muted); font-size: 31px; line-height: 1.4; }
+    .muted { color: var(--muted); }
+    .accent { color: var(--accent); }
+    .accent-2 { color: var(--accent-2); }
+    .rule { height: 2px; width: 100%; background: var(--line); }
+    .row { display: flex; align-items: center; gap: 24px; min-width: 0; }
+    .row.between { justify-content: space-between; }
+    .stack { display: grid; align-content: start; gap: 20px; min-width: 0; }
+    .cols-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; min-height: 0; }
+    .cols-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; min-height: 0; }
+
+    .panel, .metric, .callout, .web-embed {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+    .panel { padding: 28px; min-width: 0; }
+    .metric-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+    .metric { min-height: 170px; padding: 28px; display: grid; align-content: space-between; }
+    .metric .label { color: var(--muted); font-size: 18px; font-weight: 650; }
+    .metric .value { font-family: var(--font-display); font-size: 58px; font-weight: 750; line-height: 1; }
+    .metric .context { font-size: 17px; color: var(--muted); }
+    body[data-theme="neo-brutal"] .panel,
+    body[data-theme="neo-brutal"] .metric,
+    body[data-theme="neo-brutal"] .callout { border: 4px solid var(--line); box-shadow: 7px 7px 0 var(--shadow); }
+
+    .chart { width: 100%; min-height: 390px; height: 100%; position: relative; }
+    .chart::before { content: "Preparing chart"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 18px; }
+    .chart.is-ready::before { display: none; }
+    .chart .chart-options { display: none; }
+
+    .timeline { position: relative; display: grid; gap: 30px; padding-top: 24px; }
+    .timeline-track { position: relative; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+    .timeline-fill { width: calc(var(--timeline-progress, 0) * 100%); height: 100%; background: var(--accent); transition: width 620ms var(--ease); }
+    .timeline-items { display: grid; grid-template-columns: repeat(var(--timeline-count, 4), minmax(0, 1fr)); gap: 16px; }
+    .timeline-item {
+      position: relative;
+      padding: 24px 20px;
+      min-height: 150px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      opacity: .58;
+      transform: scale(.96);
+      transition: opacity 320ms ease, transform 420ms var(--ease), background-color 320ms ease;
+      cursor: pointer;
+    }
+    .timeline-item::before { content: ""; position: absolute; top: -40px; left: 22px; width: 16px; height: 16px; border-radius: 50%; background: var(--surface); border: 4px solid var(--line); }
+    .timeline-item.is-active { opacity: 1; transform: scale(1.055); background: var(--surface); z-index: 2; }
+    .timeline-item.is-active::before { border-color: var(--accent); background: var(--accent); }
+    .timeline-item .time { color: var(--accent); font-size: 16px; font-weight: 750; margin-bottom: 12px; }
+    .timeline-item p { font-size: 18px; }
+
+    .web-embed { position: relative; overflow: hidden; min-height: 470px; background: #fff; color: #1b1f24; }
+    .web-embed iframe { width: 100%; height: 100%; min-height: 470px; border: 0; background: #fff; }
+    .embed-status { position: absolute; top: 12px; right: 12px; z-index: 2; padding: 7px 10px; background: #15181d; color: #fff; border-radius: 4px; font-size: 13px; }
+    .embed-fallback { display: none; padding: 20px; color: #7a2e22; background: #fff0ec; font-size: 16px; }
+    .web-embed[data-network-required="true"] .embed-fallback { display: block; position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 2; padding: 12px 14px; border: 1px solid #e7a596; }
+    .web-embed.is-unavailable .embed-fallback { display: block; }
+
+    .quote { font-family: var(--font-display); font-size: 58px; line-height: 1.18; max-width: 1240px; }
+    .quote::before { content: "\201C"; color: var(--accent); }
+    .quote::after { content: "\201D"; color: var(--accent); }
+    .quote-source { margin-top: 24px; color: var(--muted); font-size: 20px; }
+    .callout { padding: 24px 28px; border-left: 8px solid var(--accent); }
+    .callout p { font-size: 21px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 12px; }
+    .chip { padding: 9px 13px; border: 1px solid var(--line); background: var(--surface); font-size: 16px; font-weight: 650; }
+
+    .figure { margin: 0; min-width: 0; }
+    .figure img, .figure video { display: block; width: 100%; max-height: 620px; object-fit: contain; border-radius: var(--radius); }
+    .figure figcaption { margin-top: 12px; color: var(--muted); font-size: 16px; }
+    pre, code { font-family: "Cascadia Code", Consolas, monospace; }
+    pre { margin: 0; padding: 28px; overflow: hidden; background: #101318; color: #f1f4f8; border: 1px solid #343b45; border-radius: var(--radius); font-size: 19px; line-height: 1.5; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 20px; }
+    th, td { padding: 16px 18px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-size: 16px; text-transform: uppercase; letter-spacing: .06em; }
+    .shape { position: absolute; pointer-events: none; }
+    .shape.circle { border-radius: 50%; }
+    .shape.accent { background: var(--accent); }
+    .shape.accent-2 { background: var(--accent-2); }
+
+    .fragment { opacity: 0; transform: translateY(18px); transition: opacity 520ms ease, transform 520ms var(--ease); }
+    .fragment.is-revealed { opacity: 1; transform: translateY(0); }
+    [data-shared] { view-transition-name: none; }
+    .shared-clone { position: fixed; z-index: 2000; margin: 0; pointer-events: none; transform-origin: top left; overflow: hidden; }
+    #shared-overlay { position: fixed; inset: 0; z-index: 1999; pointer-events: none; }
+
+    #progress-shell {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 3000;
+      height: 7px;
+      background: color-mix(in srgb, var(--line) 62%, transparent);
+    }
+    #deck-progress { width: 0; height: 100%; background: var(--accent); transition: width 460ms var(--ease); }
+    #deck-counter {
+      position: fixed;
+      top: 20px;
+      right: 22px;
+      z-index: 3001;
+      color: var(--fg);
+      background: color-mix(in srgb, var(--surface) 86%, transparent);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 8px 11px;
+      font-variant-numeric: tabular-nums;
+      font-size: 14px;
+      backdrop-filter: blur(10px);
+    }
+    #controls { position: fixed; right: 22px; bottom: 20px; z-index: 3001; display: flex; gap: 8px; }
+    .icon-button {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      color: var(--fg);
+      background: color-mix(in srgb, var(--surface) 90%, transparent);
+      box-shadow: 0 8px 24px var(--shadow);
+      cursor: pointer;
+      font-size: 20px;
+      backdrop-filter: blur(10px);
+    }
+    .icon-button:disabled { opacity: .35; cursor: default; }
+    .icon-button:hover:not(:disabled) { background: var(--accent); color: #fff; }
+    body[data-theme="flagship-keynote"] #progress-shell { height: 2px; background: rgba(255,255,255,.07); }
+    body[data-theme="flagship-keynote"] #deck-counter { padding: 0; border: 0; background: transparent; backdrop-filter: none; }
+    body[data-theme="flagship-keynote"] #controls { opacity: .16; transition: opacity 240ms ease; }
+    body[data-theme="flagship-keynote"] #controls:hover,
+    body[data-theme="flagship-keynote"] #controls:focus-within { opacity: 1; }
+
+    dialog { width: min(560px, calc(100% - 32px)); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 0; box-shadow: 0 24px 80px rgba(0,0,0,.4); }
+    dialog::backdrop { background: rgba(0,0,0,.58); }
+    .dialog-content { padding: 28px; display: grid; gap: 20px; }
+    .dialog-content h2 { font-size: 30px; }
+    .shortcut-grid { display: grid; grid-template-columns: auto 1fr; gap: 12px 18px; font-size: 16px; }
+    kbd { display: inline-block; min-width: 30px; padding: 4px 7px; text-align: center; border: 1px solid var(--line); border-bottom-width: 3px; border-radius: 4px; background: var(--panel); }
+    #notes-panel { position: fixed; left: 20px; right: 20px; bottom: 20px; z-index: 3002; display: none; max-height: 34vh; overflow: auto; padding: 18px 22px; color: var(--fg); background: var(--surface); border: 1px solid var(--line); box-shadow: 0 18px 60px var(--shadow); font-size: 17px; line-height: 1.5; }
+    #notes-panel.is-visible { display: block; }
+    .speaker-notes { display: none; }
+
+    ::view-transition-old(root) { animation: deck-old var(--duration) var(--ease) both; }
+    ::view-transition-new(root) { animation: deck-new var(--duration) var(--ease) both; }
+    @keyframes deck-old { to { opacity: .2; transform: scale(.985); } }
+    @keyframes deck-new { from { opacity: .2; transform: translateX(3%) scale(.985); } }
+
+    @media (max-aspect-ratio: 4/5) {
+      #deck-counter { top: 16px; right: 14px; }
+      #controls { right: 14px; bottom: max(14px, env(safe-area-inset-bottom)); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+    }
+    @media print {
+      html, body { overflow: visible; width: auto; height: auto; background: #fff; }
+      #viewport { position: static; overflow: visible; }
+      #deck-stage { position: static; width: 1600px; height: auto; transform: none; box-shadow: none; overflow: visible; }
+      .slide, .slide.is-active, .slide.is-exiting { position: relative; display: block; visibility: visible; opacity: 1; width: 1600px; height: 900px; transform: none; break-after: page; page-break-after: always; }
+      #progress-shell, #deck-counter, #controls, #notes-panel { display: none !important; }
+    }
+
+    __CUSTOM_CSS__
+  </style>
+</head>
+<body data-theme="__THEME__">
+  <div id="progress-shell" aria-hidden="true"><div id="deck-progress"></div></div>
+  <div id="deck-counter" aria-live="polite">1 / 1</div>
+  <main id="viewport">
+    <div id="deck-stage" aria-roledescription="slide deck">
+      __SLIDES_HTML__
+    </div>
+  </main>
+  <div id="controls" aria-label="Presentation controls">
+    <button class="icon-button" id="previous-slide" type="button" title="Previous slide" aria-label="Previous slide">&#8592;</button>
+    <button class="icon-button" id="next-slide" type="button" title="Next slide" aria-label="Next slide">&#8594;</button>
+    <button class="icon-button" id="fullscreen" type="button" title="Toggle fullscreen" aria-label="Toggle fullscreen">&#x26F6;</button>
+    <button class="icon-button" id="show-help" type="button" title="Show controls" aria-label="Show controls">?</button>
+  </div>
+  <div id="notes-panel" role="status" aria-live="polite"></div>
+  <div id="shared-overlay" aria-hidden="true"></div>
+
+  <dialog id="help-dialog">
+    <div class="dialog-content">
+      <div class="row between"><h2>Controls</h2><button class="icon-button" id="close-help" type="button" aria-label="Close">&#215;</button></div>
+      <div class="shortcut-grid">
+        <kbd>&#8592;</kbd><span>Previous slide</span>
+        <kbd>&#8594;</kbd><span>Next slide</span>
+        <kbd>Home</kbd><span>First slide</span>
+        <kbd>End</kbd><span>Last slide</span>
+        <kbd>F</kbd><span>Fullscreen</span>
+        <kbd>S</kbd><span>Speaker notes</span>
+        <kbd>?</kbd><span>This panel</span>
+      </div>
+    </div>
+  </dialog>
+
+  <script id="deck-spec" type="application/json">__DECK_SPEC__</script>
+  <script>__ECHARTS_JS__</script>
+  <script>
+  (() => {
+    "use strict";
+
+    const spec = JSON.parse(document.getElementById("deck-spec").textContent);
+    const stage = document.getElementById("deck-stage");
+    const slides = Array.from(stage.querySelectorAll(".slide"));
+    const progress = document.getElementById("deck-progress");
+    const counter = document.getElementById("deck-counter");
+    const previousButton = document.getElementById("previous-slide");
+    const nextButton = document.getElementById("next-slide");
+    const fullscreenButton = document.getElementById("fullscreen");
+    const helpDialog = document.getElementById("help-dialog");
+    const notesPanel = document.getElementById("notes-panel");
+    const sharedOverlay = document.getElementById("shared-overlay");
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+    const charts = new WeakMap();
+    const chartOptions = new WeakMap();
+    const slideTimers = new WeakMap();
+    const slideFrames = new WeakMap();
+    const timelineControllers = new WeakMap();
+    let current = 0;
+    let transitionSerial = 0;
+    let touchStart = null;
+    let lastWheelAt = 0;
+
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+    const cssSafe = value => `shared-${String(value).replace(/[^a-zA-Z0-9_-]/g, "-")}`;
+    const forwardKeys = new Set(["ArrowRight", "ArrowDown", "PageDown", " ", "Enter", "NumpadEnter", "MediaTrackNext", "BrowserForward"]);
+    const backwardKeys = new Set(["ArrowLeft", "ArrowUp", "PageUp", "Backspace", "MediaTrackPrevious", "BrowserBack"]);
+
+    function addTimer(slide, timer) {
+      const timers = slideTimers.get(slide) || [];
+      timers.push(timer);
+      slideTimers.set(slide, timers);
+    }
+
+    function clearSlideTimers(slide) {
+      (slideTimers.get(slide) || []).forEach(timer => clearTimeout(timer));
+      slideTimers.set(slide, []);
+    }
+
+    function addFrame(slide, frame) {
+      const frames = slideFrames.get(slide) || new Set();
+      frames.add(frame);
+      slideFrames.set(slide, frames);
+    }
+
+    function clearSlideFrames(slide) {
+      (slideFrames.get(slide) || new Set()).forEach(frame => cancelAnimationFrame(frame));
+      slideFrames.set(slide, new Set());
+    }
+
+    function scaleStage() {
+      const insetX = 24;
+      const insetY = 24;
+      const scale = Math.min((innerWidth - insetX) / 1600, (innerHeight - insetY) / 900);
+      document.documentElement.style.setProperty("--deck-scale", String(Math.max(.1, scale)));
+      chartsForSlide(slides[current]).forEach(chart => chart.resize());
+    }
+
+    function chartsForSlide(slide) {
+      return Array.from(slide ? slide.querySelectorAll(".chart") : [])
+        .map(element => charts.get(element))
+        .filter(Boolean);
+    }
+
+    function fragmentsForSlide(slide) {
+      return Array.from(slide ? slide.querySelectorAll(".fragment") : []);
+    }
+
+    function revealedFragmentCount(slide) {
+      return fragmentsForSlide(slide).filter(fragment => fragment.classList.contains("is-revealed")).length;
+    }
+
+    function updateNavigationControls() {
+      const fragments = fragmentsForSlide(slides[current]);
+      const revealed = revealedFragmentCount(slides[current]);
+      previousButton.disabled = current === 0 && revealed === 0;
+      nextButton.disabled = current === slides.length - 1 && revealed === fragments.length;
+    }
+
+    function setProgress(index) {
+      const ratio = slides.length ? (index + 1) / slides.length : 0;
+      progress.style.width = `${ratio * 100}%`;
+      progress.parentElement.setAttribute("role", "progressbar");
+      progress.parentElement.setAttribute("aria-valuemin", "1");
+      progress.parentElement.setAttribute("aria-valuemax", String(slides.length));
+      progress.parentElement.setAttribute("aria-valuenow", String(index + 1));
+      counter.textContent = `${index + 1} / ${slides.length}`;
+      updateNavigationControls();
+    }
+
+    function setFragmentState(slide, revealedCount) {
+      const fragments = fragmentsForSlide(slide);
+      const count = clamp(revealedCount, 0, fragments.length);
+      fragments.forEach((fragment, index) => {
+        const revealed = index < count;
+        fragment.classList.toggle("is-revealed", revealed);
+        fragment.setAttribute("aria-hidden", revealed ? "false" : "true");
+      });
+      slide.querySelectorAll(".timeline").forEach(timeline => {
+        const stepItems = Array.from(timeline.querySelectorAll(".timeline-item.fragment"));
+        if (!stepItems.length) return;
+        const lastRevealed = stepItems.reduce((active, item, index) => item.classList.contains("is-revealed") ? index : active, -1);
+        timelineControllers.get(timeline)?.select(Math.max(0, lastRevealed));
+      });
+      if (slide.classList.contains("is-active")) updateNavigationControls();
+    }
+
+    function revealNextFragment(slide) {
+      const fragments = fragmentsForSlide(slide);
+      const revealed = revealedFragmentCount(slide);
+      if (revealed >= fragments.length) return false;
+      setFragmentState(slide, revealed + 1);
+      return true;
+    }
+
+    function hidePreviousFragment(slide) {
+      const revealed = revealedFragmentCount(slide);
+      if (revealed <= 0) return false;
+      setFragmentState(slide, revealed - 1);
+      return true;
+    }
+
+    function animateNumber(element, slide) {
+      const target = Number(element.dataset.value || element.textContent.replace(/[^0-9.-]/g, ""));
+      if (!Number.isFinite(target)) return;
+      const decimals = Number(element.dataset.decimals || 0);
+      const duration = reducedMotion.matches ? 1 : Number(element.dataset.duration || 1200);
+      const prefix = element.dataset.prefix || "";
+      const suffix = element.dataset.suffix || "";
+      const formatOptions = { minimumFractionDigits: decimals, maximumFractionDigits: decimals };
+      let formatter;
+      try {
+        formatter = new Intl.NumberFormat(spec.meta.language || undefined, formatOptions);
+      } catch (error) {
+        formatter = new Intl.NumberFormat(undefined, formatOptions);
+      }
+      const started = performance.now();
+      let frame = null;
+      const schedule = () => {
+        frame = requestAnimationFrame(tick);
+        addFrame(slide, frame);
+      };
+      function tick(now) {
+        slideFrames.get(slide)?.delete(frame);
+        if (!slide.classList.contains("is-active")) return;
+        const t = clamp((now - started) / duration, 0, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        element.textContent = `${prefix}${formatter.format(target * eased)}${suffix}`;
+        if (t < 1) schedule();
+      }
+      schedule();
+    }
+
+    function initCharts(slide) {
+      if (!window.echarts) return;
+      slide.querySelectorAll(".chart").forEach(element => {
+        let chart = charts.get(element);
+        if (!chart) {
+          try {
+            let option = chartOptions.get(element);
+            if (!option) {
+              const optionNode = element.querySelector(".chart-options");
+              if (!optionNode) return;
+              option = JSON.parse(optionNode.textContent);
+            }
+            const css = getComputedStyle(document.body);
+            const foreground = css.getPropertyValue("--fg").trim();
+            const muted = css.getPropertyValue("--muted").trim();
+            const line = css.getPropertyValue("--line").trim();
+            option.color ||= [css.getPropertyValue("--accent").trim(), css.getPropertyValue("--accent-2").trim(), "#e3b341", "#7796cb"];
+            option.textStyle = { color: foreground, fontFamily: getComputedStyle(document.body).fontFamily, ...(option.textStyle || {}) };
+            const axes = [option.xAxis, option.yAxis].flat().filter(Boolean);
+            axes.forEach(axis => {
+              axis.axisLabel = { color: muted, ...(axis.axisLabel || {}) };
+              axis.axisLine = { ...(axis.axisLine || {}), lineStyle: { color: line, ...((axis.axisLine || {}).lineStyle || {}) } };
+              axis.splitLine = { ...(axis.splitLine || {}), lineStyle: { color: line, ...((axis.splitLine || {}).lineStyle || {}) } };
+            });
+            const legends = Array.isArray(option.legend) ? option.legend : [option.legend || {}];
+            legends.forEach(legend => { legend.textStyle = { color: muted, ...(legend.textStyle || {}) }; });
+            option.legend = Array.isArray(option.legend) ? legends : legends[0];
+            chartOptions.set(element, option);
+            chart = echarts.init(element, null, { renderer: element.dataset.renderer || "canvas" });
+            chart.setOption(option, { notMerge: true });
+            charts.set(element, chart);
+            element.classList.add("is-ready");
+          } catch (error) {
+            element.dataset.chartError = error.message;
+            console.error("Chart configuration failed", error);
+          }
+        }
+        const frame = requestAnimationFrame(() => {
+          slideFrames.get(slide)?.delete(frame);
+          if (chart && !chart.isDisposed() && slide.classList.contains("is-active")) chart.resize();
+        });
+        addFrame(slide, frame);
+      });
+    }
+
+    function disposeCharts(slide) {
+      slide.querySelectorAll(".chart").forEach(element => {
+        const chart = charts.get(element);
+        if (chart && !chart.isDisposed()) chart.dispose();
+        charts.delete(element);
+        element.classList.remove("is-ready");
+      });
+    }
+
+    function initTimeline(timeline, slide) {
+      const items = Array.from(timeline.querySelectorAll(".timeline-item"));
+      if (!items.length) return;
+      const interval = Number(timeline.dataset.autoplay || 0);
+      if (interval <= 0) items.forEach(item => item.classList.add("fragment"));
+      timeline.style.setProperty("--timeline-count", String(items.length));
+      timelineControllers.get(timeline)?.stop();
+      const controller = {
+        active: clamp(Number(timeline.dataset.start || 0), 0, items.length - 1),
+        autoplayTimer: null,
+        stop() {
+          if (this.autoplayTimer) clearTimeout(this.autoplayTimer);
+          this.autoplayTimer = null;
+        },
+        select(index, userInitiated = false) {
+          this.active = clamp(index, 0, items.length - 1);
+          items.forEach((item, itemIndex) => {
+            item.classList.toggle("is-active", itemIndex === this.active);
+            item.setAttribute("aria-current", itemIndex === this.active ? "step" : "false");
+          });
+          timeline.style.setProperty("--timeline-progress", String(items.length === 1 ? 1 : this.active / (items.length - 1)));
+          if (userInitiated) this.stop();
+        }
+      };
+      timelineControllers.set(timeline, controller);
+
+      function selectCurrent(index, userInitiated = false) {
+        timelineControllers.get(timeline)?.select(index, userInitiated);
+      }
+
+      if (!timeline.dataset.bound) {
+        items.forEach((item, itemIndex) => {
+          item.tabIndex = 0;
+          item.addEventListener("click", () => selectCurrent(itemIndex, true));
+          item.addEventListener("keydown", event => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              selectCurrent(itemIndex, true);
+            }
+          });
+        });
+        timeline.dataset.bound = "true";
+      }
+      controller.select(controller.active);
+
+      if (interval > 0 && !reducedMotion.matches) {
+        const advance = () => {
+          if (timelineControllers.get(timeline) !== controller || !slide.classList.contains("is-active")) return;
+          controller.select((controller.active + 1) % items.length);
+          controller.autoplayTimer = setTimeout(advance, interval);
+        };
+        controller.autoplayTimer = setTimeout(advance, interval);
+      }
+    }
+
+    function initEmbeds(slide) {
+      slide.querySelectorAll(".web-embed iframe").forEach(frame => {
+        const container = frame.closest(".web-embed");
+        let status = container.querySelector(".embed-status");
+        if (!status) {
+          status = document.createElement("span");
+          status.className = "embed-status";
+          container.append(status);
+        }
+        const networkRequired = container.dataset.networkRequired === "true";
+        status.textContent = frame.srcdoc ? "Embedded" : networkRequired ? "Network required" : "Loading";
+        if (!frame.dataset.bound) {
+          frame.addEventListener("load", () => {
+            status.textContent = frame.srcdoc ? "Embedded" : networkRequired ? "Network required" : "Loaded";
+          });
+          frame.addEventListener("error", () => {
+            container.classList.add("is-unavailable");
+            status.textContent = networkRequired ? "Network unavailable" : "Unavailable";
+          });
+          frame.dataset.bound = "true";
+        }
+      });
+    }
+
+    function activateComponents(slide, revealAllFragments = false) {
+      slide.querySelectorAll(".timeline").forEach(timeline => initTimeline(timeline, slide));
+      setFragmentState(slide, revealAllFragments ? fragmentsForSlide(slide).length : 0);
+      slide.querySelectorAll(".count-up").forEach(element => animateNumber(element, slide));
+      initCharts(slide);
+      initEmbeds(slide);
+      slide.querySelectorAll("video[data-autoplay], audio[data-autoplay]").forEach(media => media.play().catch(() => {}));
+    }
+
+    function deactivateComponents(slide) {
+      clearSlideTimers(slide);
+      clearSlideFrames(slide);
+      slide.querySelectorAll(".timeline").forEach(timeline => timelineControllers.get(timeline)?.stop());
+      disposeCharts(slide);
+      slide.querySelectorAll("video, audio").forEach(media => media.pause());
+    }
+
+    function sharedMap(slide) {
+      const map = new Map();
+      slide.querySelectorAll("[data-shared]").forEach(element => {
+        const key = element.dataset.shared;
+        if (key && !map.has(key)) map.set(key, element);
+      });
+      return map;
+    }
+
+    function prepareSharedNames(fromSlide, toSlide) {
+      const from = sharedMap(fromSlide);
+      const to = sharedMap(toSlide);
+      const pairs = [];
+      from.forEach((element, key) => {
+        if (!to.has(key)) return;
+        const name = cssSafe(key);
+        element.style.viewTransitionName = name;
+        pairs.push({ from: element, to: to.get(key), name });
+      });
+      return {
+        swap() {
+          pairs.forEach(pair => {
+            pair.from.style.viewTransitionName = "";
+            pair.to.style.viewTransitionName = pair.name;
+          });
+        },
+        clear() {
+          pairs.forEach(pair => {
+            pair.from.style.viewTransitionName = "";
+            pair.to.style.viewTransitionName = "";
+          });
+        }
+      };
+    }
+
+    function fallbackSharedTransition(fromSlide, toSlide, activate) {
+      const from = sharedMap(fromSlide);
+      const pairs = [];
+      from.forEach((element, key) => {
+        const target = sharedMap(toSlide).get(key);
+        if (target) pairs.push({ element, target, fromRect: element.getBoundingClientRect() });
+      });
+      activate();
+      pairs.forEach(({ element, target, fromRect }) => {
+        const toRect = target.getBoundingClientRect();
+        if (!fromRect.width || !fromRect.height || !toRect.width || !toRect.height) return;
+        const clone = element.cloneNode(true);
+        clone.removeAttribute("id");
+        clone.classList.add("shared-clone");
+        Object.assign(clone.style, {
+          left: `${fromRect.left}px`, top: `${fromRect.top}px`, width: `${fromRect.width}px`, height: `${fromRect.height}px`
+        });
+        target.style.visibility = "hidden";
+        sharedOverlay.append(clone);
+        const dx = toRect.left - fromRect.left;
+        const dy = toRect.top - fromRect.top;
+        const sx = toRect.width / fromRect.width;
+        const sy = toRect.height / fromRect.height;
+        const animation = clone.animate([
+          { transform: "translate(0,0) scale(1,1)", opacity: 1 },
+          { transform: `translate(${dx}px,${dy}px) scale(${sx},${sy})`, opacity: 1 }
+        ], { duration: 680, easing: "cubic-bezier(.2,.75,.2,1)", fill: "forwards" });
+        animation.finished.finally(() => { clone.remove(); target.style.visibility = ""; });
+      });
+    }
+
+    function applySlide(index, previous, direction) {
+      transitionSerial += 1;
+      const serial = transitionSerial;
+      stage.dataset.direction = direction;
+      const previousSlide = slides[previous];
+      const nextSlide = slides[index];
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle("is-active", slideIndex === index);
+        slide.setAttribute("aria-hidden", slideIndex === index ? "false" : "true");
+      });
+      if (previousSlide && previous !== index) previousSlide.classList.add("is-exiting");
+      nextSlide.classList.add("is-entering");
+      current = index;
+      setProgress(index);
+      location.hash = String(index + 1);
+      if (previousSlide && previous !== index) deactivateComponents(previousSlide);
+      activateComponents(nextSlide, direction === "backward");
+      updateNavigationControls();
+      updateNotes();
+      const timer = setTimeout(() => {
+        if (serial !== transitionSerial) return;
+        slides.forEach(slide => slide.classList.remove("is-exiting", "is-entering"));
+      }, reducedMotion.matches ? 10 : 720);
+      addTimer(nextSlide, timer);
+    }
+
+    function goTo(index) {
+      const next = clamp(index, 0, slides.length - 1);
+      if (next === current) return;
+      const previous = current;
+      const direction = next > previous ? "forward" : "backward";
+      const fromSlide = slides[previous];
+      const toSlide = slides[next];
+      const activate = () => applySlide(next, previous, direction);
+
+      if (reducedMotion.matches) {
+        activate();
+      } else if (document.startViewTransition) {
+        const sharedNames = prepareSharedNames(fromSlide, toSlide);
+        const transition = document.startViewTransition(() => {
+          activate();
+          sharedNames.swap();
+        });
+        transition.finished.finally(() => sharedNames.clear());
+      } else {
+        fallbackSharedTransition(fromSlide, toSlide, activate);
+      }
+    }
+
+    function navigate(direction) {
+      const slide = slides[current];
+      if (direction > 0) {
+        if (!revealNextFragment(slide)) goTo(current + 1);
+      } else if (direction < 0) {
+        if (!hidePreviousFragment(slide)) goTo(current - 1);
+      }
+    }
+
+    function updateNotes() {
+      const notes = slides[current].querySelector("[data-notes]");
+      notesPanel.textContent = notes ? notes.textContent : "No speaker notes for this slide.";
+    }
+
+    function toggleNotes() {
+      updateNotes();
+      notesPanel.classList.toggle("is-visible");
+    }
+
+    function toggleFullscreen() {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen().catch(() => {});
+    }
+
+    function isTypingTarget(target) {
+      return target instanceof HTMLElement && (target.matches("input,textarea,select") || target.isContentEditable);
+    }
+
+    function handleKey(event) {
+      if (isTypingTarget(event.target)) return;
+      const key = event.code === "NumpadEnter" ? "NumpadEnter" : event.key;
+      if (forwardKeys.has(key)) { event.preventDefault(); navigate(1); }
+      else if (backwardKeys.has(key)) { event.preventDefault(); navigate(-1); }
+      else if (event.key === "Home") { event.preventDefault(); goTo(0); }
+      else if (event.key === "End") { event.preventDefault(); goTo(slides.length - 1); }
+      else if (event.key.toLowerCase() === "f") toggleFullscreen();
+      else if (event.key.toLowerCase() === "s") toggleNotes();
+      else if (event.key === "?") helpDialog.showModal();
+      else if (event.key === "Escape" && helpDialog.open) helpDialog.close();
+    }
+
+    function indexFromHash() {
+      const value = Number(location.hash.replace("#", ""));
+      return Number.isFinite(value) ? clamp(value - 1, 0, slides.length - 1) : 0;
+    }
+
+    previousButton.addEventListener("click", () => navigate(-1));
+    nextButton.addEventListener("click", () => navigate(1));
+    fullscreenButton.addEventListener("click", toggleFullscreen);
+    document.getElementById("show-help").addEventListener("click", () => helpDialog.showModal());
+    document.getElementById("close-help").addEventListener("click", () => helpDialog.close());
+    document.addEventListener("keydown", handleKey);
+    addEventListener("resize", scaleStage);
+    addEventListener("hashchange", () => {
+      const target = indexFromHash();
+      if (target !== current) goTo(target);
+    });
+    stage.addEventListener("pointerdown", event => { touchStart = { x: event.clientX, y: event.clientY, time: performance.now() }; });
+    stage.addEventListener("pointerup", event => {
+      if (!touchStart) return;
+      const dx = event.clientX - touchStart.x;
+      const dy = event.clientY - touchStart.y;
+      if (performance.now() - touchStart.time < 700 && Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4) {
+        navigate(dx < 0 ? 1 : -1);
+      }
+      touchStart = null;
+    });
+    stage.addEventListener("wheel", event => {
+      if (Math.abs(event.deltaY) < 24 || performance.now() - lastWheelAt < 700) return;
+      lastWheelAt = performance.now();
+      navigate(event.deltaY > 0 ? 1 : -1);
+    }, { passive: true });
+
+    current = indexFromHash();
+    slides.forEach((slide, index) => {
+      slide.classList.toggle("is-active", index === current);
+      slide.setAttribute("aria-hidden", index === current ? "false" : "true");
+    });
+    scaleStage();
+    setProgress(current);
+    activateComponents(slides[current]);
+    updateNotes();
+    window.__DECK_DEBUG__ = {
+      get currentIndex() { return current; },
+      get slideCount() { return slides.length; },
+      get readyCharts() { return document.querySelectorAll(".chart.is-ready").length; },
+      goTo,
+      navigate,
+      setFragmentState,
+      scaleStage
+    };
+  })();
+  </script>
+</body>
+</html>
