@@ -87,4 +87,4 @@ npm test
 
 ## License
 
-项目代码使用 [MIT License](LICENSE)。内置 Apache ECharts 保留其原始 Apache 2.0 许可文件。
+项目代码使用 [Apache License 2.0](LICENSE)。内置 Apache ECharts 保留其原始许可证及第三方组件声明。

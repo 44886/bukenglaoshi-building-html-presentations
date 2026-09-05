@@ -2,7 +2,7 @@
 name: bukenglaoshi-building-html-presentations
 description: Use when creating or editing a slide deck, presentation, pitch, keynote, report, or slideshow that must be delivered as one standalone HTML file.
 metadata:
-  version: 1.0.0
+  version: 1.0.1
 ---
 
 # Building HTML Presentations
